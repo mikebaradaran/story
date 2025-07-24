@@ -96,6 +96,10 @@ function showCurrentLine(text) {
   div.innerText = text;
 }
 
+function isEmoji(char) {
+  const emojiRegex = /\p{Emoji}/u;
+  return emojiRegex.test(char);
+}
 // ------------------Speech --------------------------------------
 let msg;
 
@@ -172,6 +176,21 @@ async function readAndHighlightEveryWord(divID) {
     span.classList.toggle("highlight");;
   }
   div.innerHTML = startText;
+}
+
+let stopMe = false;
+async function readAndHighlightStory() {
+  stopMe=false;
+  let spans = document.querySelectorAll(`#story span`);
+  for (let span of spans) {
+    if(isEmoji(span.innerText))
+      continue;
+    span.classList.toggle("highlight");
+    await readWordAndWait(span.innerText);
+    console.log(span.innerText);
+    span.classList.toggle("highlight");
+    if(stopMe) break;
+  }
 }
 
 
