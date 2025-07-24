@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+  <title>Stories</title>
+
+  <link rel="stylesheet" href="index.css" />
+  <script src="index.js" defer></script>
+
+</head>
+
+<body>
+  <select id="titles"></select>
+  <spanBtn onclick="readAll()">▶️ all</spanBtn>
+  <spanBtn onclick="stopReadAll()">⏹️</spanBtn>
+  <div id='currentLineDiv'></div>
+  <p id="story"></p>
+  <button onclick="readAndHighlightEveryWord('words')">read each word</button>
+  <div id="words">This is a nice story</div>
+  
+
+</body>
+
+</html>
