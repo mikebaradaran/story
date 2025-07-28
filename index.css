@@ -1,0 +1,51 @@
+a {
+  display: block;
+  margin: 5px;
+  font-size: large;
+}
+
+#content {
+  font-size: 50px;
+}
+
+p div:hover {
+  background-color: lightcyan;
+}
+
+p div span:hover,
+span2:hover,
+spanBtn:hover {
+  box-shadow: 2px 2px 2px black;
+  background-color: white;
+  font-weight: bold;
+  font-size: larger;
+  cursor: pointer;
+}
+
+spanBtn,
+#currentLineDiv {
+  margin-right: 10px;
+  padding: 3px;
+  box-shadow: 2px 2px 3px grey;
+  border-radius: 3px;
+}
+
+icon {
+  font-size: x-large;
+}
+
+#currentLineDiv {
+  font-size: larger;
+  margin-top: 15px;
+  background-color: lightgoldenrodyellow;
+  height: 1em;
+  display:none;
+}
+
+.highlight{
+  background-color: darkblue;
+  color:white;
+  font-size: large;
+  border-radius: 3px;
+  padding:5px;
+}

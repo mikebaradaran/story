@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://glitch.com/favicon.ico" />
+
+  <title>Stories</title>
+
+  <link rel="stylesheet" href="index.css" />
+  <script src="speech.js" defer></script>
+  <script src="index.js" defer></script>
+
+</head>
+
+<body>
+  <select id="titles"></select>
+  <spanBtn onclick="readAndHighlightEachLineInStory()" title="Read the entire story">▶️</spanBtn>
+  <spanBtn onclick="readAndHighlightEachWordInStory()" title="Read every word">📖</spanBtn>
+  <spanBtn onclick="stopReading()" title="Stop reading">⏹️</spanBtn>
+  <p id="story"></p>
+</body>
+</html>
