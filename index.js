@@ -54,7 +54,7 @@ function renderStory(data) {
     line = makeEachWordIntoSpan(line);
     line = addIconTagAroundEmojis(line);
 
-    let button = `<span2 onclick="speak('${story.rawData[i].trim()}')"  aria-label="Read line aloud">🔊</span2>`;
+    let button = `<span2 onclick="readAndHighlight(this.closest('div'),true)"  aria-label="Read line aloud">🔊</span2>`;
     div.innerHTML = `${button} ${line}`;
   }
 }
@@ -89,42 +89,50 @@ function isEmoji(char) {
 function stopReading(){
   story.stopReading = true;
 }
-async function readAndHighlightEachWordInStory() {
+
+function storyPresent(){
   if (story.innerHTML == "") {
     speak("Please select a story to read!");
-    return;
+    return false;
   }
+  return true;
+}
+
+async function readAndHighlightEachWordInStory() {
+  if (!storyPresent()) return;
   story.stopReading = false;
   let spans = document.querySelectorAll(`#story span`);
   for (let span of spans) {
     if (isEmoji(span.innerText)) continue;
-    if (story.stopReading)
-      break;
-    span.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    span.classList.toggle("highlight");
-    await speak(span.innerText);
-    span.classList.toggle("highlight");
+    if (story.stopReading) break;
+    await readAndHighlight(span);
   }
+}
+
+async function readAndHighlight(tag, isLine){
+    story.stopReading = false;
+    tag.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    tag.classList.add("highlight");
+    let text = (isLine)? tag.rawData : tag.innerText;
+    await speak(text);
+    tag.classList.remove("highlight");
 }
 
 // read each line ----------------------------------------------
 async function readAndHighlightEachLineInStory() {
+  if (!storyPresent()) return;
   story.stopReading = false;
   let divs = document.querySelectorAll(`#story div`);
   for (let div of divs) {
-    if (story.stopReading)
-      break;
-    div.classList.toggle("highlight");
-    div.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    await speak(div.rawData);
-    div.classList.toggle("highlight");
+    if (story.stopReading) break;
+    await readAndHighlight(div, true);
   }
 }
 
 function speak(text) {
   return new Promise(resolve => {
-    if (text === "") {
-      resolve(); // resolve immediately if empty
+    if (text === "" || story.stopReading) {
+      resolve();    // resolve immediately if empty
       return;
     }
     msg.text = text;
@@ -132,97 +140,3 @@ function speak(text) {
     msg.onend = resolve;
   });
 }
-
-
-// let stopStartReadingAll = true;
-// function stopStartReadingAll_Buttonclick(button) {
-//   // if (story.innerHTML == "") {
-//   //   speak("Please select a story to read!");
-//   //   return;
-//   // }
-//     readAndHighlightEachLineInStory();
-
-//   // story.stopReading = !story.stopReading;
-//   // if (!story.stopReading) {
-//   //   button.innerText += " Stop";
-//   //   readAndHighlightEachLineInStory();
-//   // }
-//   // else {
-//   //   //stopReadAll();
-//   //   button.innerText = button.innerText.replace("Stop", "");
-//   // }
-// }
-
-// //let stopReadingEachWord = true;
-// function readAndHighlightEachWordInStory_Buttonclick(button) {
-//   // if (story.innerHTML == "") {
-//   //   speak("Please select a story to read!");
-//   //   return;
-//   // }
-//     readAndHighlightEachWordInStory();
-
-//   // story.stopReading = !story.stopReading;
-//   // if (!story.stopReading) {
-//   //   readAndHighlightEachWordInStory();
-//   //   button.innerText += " Stop";
-//   // }
-//   // else
-//   //   button.innerText = button.innerText.replace("Stop", "");
-// }
-
-
-// async function readWordAndWait(word) {
-//   speak(word);
-//   while (speechSynthesis.speaking || speechSynthesis.pending) {
-//     await new Promise(r => setTimeout(r, 100));
-//   }
-// }
-
-// function showCurrentLine(text) {
-//   let div = document.getElementById("currentLineDiv");
-//   div.style.display = (text === "hideit") ? "none" : "block";
-//   div.innerText = text;
-// }
-
-
-// function speakLines(text) {
-//   let cancelled = false;
-
-//   function speakNext(i) {
-//     const delay = 200;
-//     if (cancelled || i >= story.rawData.length) {
-//       showCurrentLine("hideit");
-//       return;
-//     }
-//     showCurrentLine(story.rawData[i]);
-//     msg.text = story.rawData[i];
-//     speechSynthesis.speak(msg);
-
-//     msg.onend = () => {
-//       if (!cancelled)
-//         setTimeout(() => speakNext(i + 1), delay);
-//     };
-//   }
-
-//   speakNext(0);
-//   // Return a stop function
-//   return () => {
-//     cancelled = true;
-//     speechSynthesis.cancel(); // optional: stop current speech too
-//   };
-// }
-
-// function readAll() {
-//   story.stopFunc = speakLines(story.rawData);
-// }
-
-// function stopReadAll() {
-//   showCurrentLine("hideit");
-//   window.speechSynthesis.cancel();
-//   story.stopFunc?.();
-// }
-
-
-
-
-

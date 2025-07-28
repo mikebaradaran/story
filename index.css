@@ -8,9 +8,9 @@ a {
   font-size: 50px;
 }
 
-p div:hover {
+/* p div:hover {
   background-color: lightcyan;
-}
+} */
 
 p div span:hover,
 span2:hover,

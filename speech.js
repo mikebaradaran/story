@@ -1,12 +1,5 @@
 let msg;
 
-function speak(text) {
-  if (text === "") return; // Skip empty text
-  stopReadAll();
-  msg.text = text;
-  speechSynthesis.speak(msg);
-}
-
 function setupSpeech() {
   msg = new SpeechSynthesisUtterance();
 
