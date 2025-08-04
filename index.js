@@ -86,11 +86,14 @@ function isEmoji(char) {
   return emojiRegex.test(char);
 }
 // ------------------Speech --------------------------------------
-function stopReading(){
+function stopReading() {
   story.stopReading = true;
+  document.querySelectorAll('div.highlight, div span.highlight').forEach(el => {
+    el.classList.remove('highlight');
+  });
 }
 
-function storyPresent(){
+function storyPresent() {
   if (story.innerHTML == "") {
     speak("Please select a story to read!");
     return false;
@@ -109,13 +112,13 @@ async function readAndHighlightEachWordInStory() {
   }
 }
 
-async function readAndHighlight(tag, isLine){
-    story.stopReading = false;
-    tag.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    tag.classList.add("highlight");
-    let text = (isLine)? tag.rawData : tag.innerText;
-    await speak(text);
-    tag.classList.remove("highlight");
+async function readAndHighlight(tag, isLine) {
+  story.stopReading = false;
+  tag.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  tag.classList.add("highlight");
+  let text = (isLine) ? tag.rawData : tag.innerText;
+  await speak(text);
+  tag.classList.remove("highlight");
 }
 
 // read each line ----------------------------------------------
